@@ -1,3 +1,3 @@
 import pygame as pg
 
-# TODO: Make a game
+# TODO: Make a game.
