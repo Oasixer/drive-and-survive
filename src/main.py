@@ -1,59 +1,61 @@
 import pygame as pg
+import os
+from world import WorldScene, WorldData
+from scene_manager import SceneManager
 
-# TODO: Make a game.
+SCREEN_SIZE = (1600, 900)
+CAPTION="FUCK"
+pg.font.init()
+myfont = pg.font.SysFont('Comic Sans MS', 30)
 
-
-class Projectile(pg.sprite.Sprite):
-    def __init__(self, position, velocity, sprite, movement="normal", duration=None):
-        pass
-
-
-class Bomb(Projectile):
-    def __init__(self, position, velocity):
-        sprite = None
-        Projectile.__init__(position, velocity, sprite)
-        pass
-
-
-class Bullet(Projectile):
-    def __init__(self, position, velocity):
-        sprite = None
-        Projectile.__init__(position, velocity, sprite)
-
-
-class Laser(Projectile):
-    def __init__(self, position, velocity):
-        sprite = None
-        Projectile.__init__(position, velocity, sprite)
-
-
-class Module(pg.sprite.Sprite):
-    def __init__(self, position):
-        pass
-
-
-class EngineModule(Module):
-    def __init__(self, model):
-        x = None
-        y = None
-        Module.__init__(x, y)
-        #self.sprite = sprite_list[model]
-
-
-class Tank():
-    def __init__(self, type):
-        self.modules = None  # TEMP, there should be base modules
-        self.speed = 1
-        self.type = None  # Player, enemy, etc
-
-
-class PlayerTank(Tank):
+class Data:
     def __init__(self):
-        Tank.__init__(type)
-        self.distance_travelled = 0
+        self.WorldData = WorldData()
+        self.WIN_WIDTH = 1600
+        self.HALF_WIDTH = self.WIN_WIDTH/2
+        self.WIN_HEIGHT = 900
+        self.HALF_HEIGHT = self.WIN_HEIGHT/2
+        self.SCREEN_SIZE = (self.WIN_WIDTH, self.WIN_HEIGHT)
+        self.screen = pg.display.get_surface()
+        #other data here
 
+class Game:
+    def __init__(self):
+        os.environ['SDL_VIDEO_CENTERED'] = '1'
+        pg.init()
+        pg.display.set_caption(CAPTION)
+        pg.display.set_mode(SCREEN_SIZE)
+        self.fps = 60
+        self.clock = pg.time.Clock()
+        self.keys = pg.key.get_pressed()
+        self.manager = SceneManager()  # This goes to titlescene
+        self.manager.scene.data = self.data
 
-class EnemyTank(Tank):
-    def __init__(self, position, type):
-        Tank.__init__(type)
-        self.position = position
+    def main_loop(self):
+        while(True):
+            self.clock.tick(self.fps)/1000.0
+            self.handle_events()
+            self.manager.scene.update()
+            self.manager.scene.render(self.screen)
+            pg.display.flip()
+
+    def handle_events(self):
+        events = pg.event.get()
+        for event in pg.event.get():
+            if event.type==pg.QUIT:
+                pg.quit()
+                quit()
+        self.manager.scene.handle_events(events)
+'''
+    def update(self):
+        for entity in self.entities:
+            entity.update()
+
+    def render(self):
+        for sprite in self.sprites:
+            sprite.draw()
+
+        pg.display.update()'''
+
+game = Game()
+game.main_loop()
