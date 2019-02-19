@@ -1,3 +1,6 @@
+#DS_Store which is just a macOS file storing icon locations and other mac bullshit. I'm sorry for programming this on mac everyone </3
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
