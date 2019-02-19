@@ -1,10 +1,11 @@
 import pygame as pg
 
+
 class Scene:
     def __init__(self):
         pass
 
-    def render(self, screen):
+    def render(self):
         raise NotImplementedError
 
     def update(self):
@@ -12,4 +13,3 @@ class Scene:
 
     def handle_events(self, events):
         raise NotImplementedError
-

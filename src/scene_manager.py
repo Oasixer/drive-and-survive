@@ -1,4 +1,5 @@
-from title_screen import TitleScene
+from menu import TitleScene
+
 
 class SceneManager:
     def __init__(self):
@@ -6,4 +7,5 @@ class SceneManager:
 
     def go_to(self, scene):
         self.scene = scene
+        print("Set")
         self.scene.manager = self
