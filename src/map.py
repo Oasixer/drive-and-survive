@@ -1,17 +1,20 @@
 import pygame as pg
-from locations import Shop
-from scene import Scene
+
 from camera import MapCamera
 from entity import Entity
+from locations import Shop
+from modules import IronModule
+from modules import ModSize
+from scene import Scene
+from shop_scene import ShopData
 
 
-class Player(Entity):
+class PlayerMapIcon(Entity):
     def __init__(self):
         super().__init__()
-        self.location = [0, 0]
-        self.image = pg.image.load("../include/player_icon_test.png"
-                                   ).convert_alpha()
+        self.image = pg.image.load("../include/player_icon_test.png").convert_alpha()
         self.rect = self.image.get_rect()
+        self.rect.center = (0, 0)
 
     def update(self):
         for action in self.inputs:
@@ -23,48 +26,45 @@ class Player(Entity):
 
 
 class MapData:
-    def __init__(self):
+    def __init__(self, data):
+        self.data = data
         self.locations = []
-        vision_radius = 100
-        self.camera = MapCamera(vision_radius)
-        starter_shop = Shop()
-        self.locations = [starter_shop]
-        self.player = Player()
+        first_shop_modules = [IronModule(ModSize.small), IronModule(ModSize.large)]
+        first_shop = Shop(self.data, (300, 300), ShopData(mods=first_shop_modules))
+        self.locations = [first_shop]
+        self.player_map_icon = PlayerMapIcon()
 
 
 class MapScene(Scene):
     def __init__(self, data):
         super().__init__()
         self.data = data
-        self.player = self.data.map_data.player
+        self.map_data = self.data.map_data
+        self.camera = MapCamera()
+        self.player_map_icon = self.map_data.player_map_icon
         self.locations = self.data.map_data.locations
-
         self.inputs = []
-        self.player.inputs = self.inputs
-        self.player.manager = self.data.manager
-        self.bg = pg.Surface(
-            (self.data.map_data.map_width, self.data.map_data.map_height)
-        )
-        self.bg.convert()
-        self.bg.fill(pg.Color("#0094FF"))
-        self.camera = MapCamera
+        self.player_map_icon.inputs = self.inputs
+        self.player_map_icon.manager = self.data.manager
+        self.camera.set_rect_rel(self.player_map_icon)
+        for loc in self.locations:
+            self.camera.set_rect_rel(loc)
+            print(loc.rect_rel)
+        # Super temporary
+        self.bg_map_area = pg.display.get_surface()
+        self.bg_map_area.convert()
+        self.bg_map_area.fill(pg.Color("#0094FF"))
 
     def update(self):
         for loc in self.locations:
-            loc.pos_screen = (loc.pos[0], -self.data.WIN_HEIGHT - loc.pos[1])
-        self.player.pos_screen = (self.player.pos[0])
-        pass
+            loc.update()
 
     def render(self):
         self.data.screen.fill(pg.Color("#0094FF"))
         for loc in self.locations:
-            self.data.screen.blit(
-                loc.image, self.camera.get_rect_relative_to_screen(loc)
-            )
-        self.data.screen.blit(
-            self.player.image,
-            self.camera.get_rect_relative_to_screen(self.player)
-        )
+            self.camera.blit_rel(loc)
+            #print(self.camera.get_rect_relative_to_screen(loc))
+        self.camera.blit_rel(self.player_map_icon)
 
     def handle_events(self, events):
         self.inputs = self.data.get_inputs(pg.key.get_pressed())

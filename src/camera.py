@@ -2,8 +2,8 @@ import pygame as pg
 
 
 class Camera:
-    def __init__():
-        raise NotImplementedError
+    def __init__(self):
+        self.screen = pg.display.get_surface()
 
     def apply(self, target):
         '''try:
@@ -18,17 +18,36 @@ class Camera:
 
 
 class MapCamera(Camera):
-    def __init__(self, vision_radius):
-        buffer_ = 50
-        screen_rect = pg.display.get_surface().get_rect()
-        self.camera_rect = pg.Rect(
-            screen_rect.centerx - vision_radius - buffer_,
-            screen_rect.centery - vision_radius - buffer_,
-            (2 * vision_radius + buffer_), (2 * vision_radius + buffer_)
-        )
+    def __init__(self):
+        super().__init__()
+        self.screen_rect = self.screen.get_rect()
 
-    def get_rect_relative_to_screen(self, target):
-        rect = pg.Rect(target)
-        rect.centerx = self.camera.centerx - target.pos[0]
-        rect.centery = self.camera.centery + target.pos[1]
-        return rect
+    def set_rect_rel(self, target):
+        rect = target.rect
+        rect.centerx = self.screen_rect.centerx + target.rect.centerx
+        rect.centery = self.screen_rect.centery - target.rect.centery
+        target.rect_rel = rect
+
+    def update_rect_rel(self, target, offset):
+        pass
+
+    def blit_rel(self, target):
+        self.screen.blit(target.image, target.rect_rel)
+
+
+class ShopCamera(Camera):
+    def __init__(self):
+        super().__init__()
+        self.screen_rect = pg.display.get_surface().get_rect()
+
+    def set_rect_rel(self, target):
+        rect = target.rect
+        rect.centerx = self.screen_rect.centerx + target.rect.centerx
+        rect.centery = self.screen_rect.centery - target.rect.centery
+        target.rect_rel = rect
+
+    def update_rect_rel(self, target, offset):
+        pass
+
+    def blit_rel(self, target):
+        self.screen.blit(target.image, target.rect_rel)

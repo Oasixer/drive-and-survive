@@ -1,12 +1,10 @@
-import pygame as pg
 import os
-from data import Data
+import pygame as pg
+
 from scene_manager import SceneManager
 
-SCREEN_SIZE = (1600, 900)
+SCREEN_SIZE = (1400, 855)
 CAPTION = "FUCK"
-pg.font.init()
-myfont = pg.font.SysFont('Comic Sans MS', 30)
 
 
 class Game:
@@ -38,17 +36,6 @@ class Game:
             elif event.type in [pg.KEYUP, pg.KEYDOWN]:
                 self.manager.scene.handle_events(events)
 
-
-'''
-    def update(self):
-        for entity in self.entities:
-            entity.update()
-
-    def render(self):
-        for sprite in self.sprites:
-            sprite.draw()
-
-        pg.display.update()'''
 
 game = Game()
 game.main_loop()
