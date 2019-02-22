@@ -1,9 +1,8 @@
 import pygame as pg
 
-from data import Data
-from map import MapData
-from map import MapScene
-from scene import Scene
+from data.data import Data
+from game_states.map.map_scene import MapScene
+from game_states.scene_management.scene import Scene
 
 
 class TitleScene(Scene):

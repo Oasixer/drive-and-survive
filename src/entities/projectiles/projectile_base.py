@@ -1,11 +1,12 @@
-import pygame as pg
+from entities.entity_base import Entity
 
 
-class Projectile(pg.sprite.Sprite):
+class Projectile(Entity):
     def __init__(self, position, velocity, sprite, movement="normal", duration=None):
         pass
 
 
+'''
 class Bomb(Projectile):
     def __init__(self, position, velocity):
         sprite = None
@@ -22,4 +23,4 @@ class Bullet(Projectile):
 class Laser(Projectile):
     def __init__(self, position, velocity):
         sprite = None
-        Projectile.__init__(position, velocity, sprite)
+        Projectile.__init__(position, velocity, sprite)'''

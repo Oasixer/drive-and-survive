@@ -51,3 +51,21 @@ class ShopCamera(Camera):
 
     def blit_rel(self, target):
         self.screen.blit(target.image, target.rect_rel)
+
+
+class LevelCamera(Camera):
+    def __init__(self):
+        super().__init__()
+        self.screen_rect = pg.display.get_surface().get_rect()
+
+    def set_rect_rel(self, target):
+        rect = target.rect
+        rect.centerx = self.screen_rect.centerx + target.rect.centerx
+        rect.centery = self.screen_rect.centery - target.rect.centery
+        target.rect_rel = rect
+
+    def update_rect_rel(self, target, offset):
+        pass
+
+    def blit_rel(self, target):
+        self.screen.blit(target.image, target.rect_rel)

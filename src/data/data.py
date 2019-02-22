@@ -1,8 +1,8 @@
 import pygame as pg
 
+from data.player_data import PlayerData
 from enum import Enum
-from map import MapData
-from player import PlayerData
+from game_states.map.map_data import MapData
 
 
 class Keys(Enum):

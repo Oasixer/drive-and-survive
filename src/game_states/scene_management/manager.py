@@ -1,4 +1,4 @@
-from title_scene import TitleScene
+from game_states.menus.title_scene import TitleScene
 
 
 class SceneManager:

@@ -1,7 +1,7 @@
 import os
 import pygame as pg
 
-from scene_manager import SceneManager
+from game_states.scene_management.manager import SceneManager
 
 SCREEN_SIZE = (1400, 855)
 CAPTION = "FUCK"
@@ -25,6 +25,7 @@ class Game:
             self.handle_events()
             self.manager.scene.update()
             self.manager.scene.render()
+            self.manager.scene.show_scene_info()
             pg.display.flip()
 
     def handle_events(self):

@@ -1,10 +1,7 @@
 import pygame as pg
 
-from entity import Entity
-from modules import ModSize
-from modules import Module
-from modules import Port
-from modules import RectLocations
+from entities.entity_base import Entity
+from entities.modules.ship_core import ShipCore
 
 
 class Ship(Entity):
@@ -32,22 +29,10 @@ class Ship(Entity):
                             port.blit_from_parent(screen)
 
 
-class BaseShip(Module):
-    def __init__(self, parent_ship):
-        super().__init__(
-            attached_to=parent_ship, image=pg.image.load("../include/ship_basic_test.png").convert())
-        self.set_both_rects()
-        self.ports = [Port(size=ModSize.large, side=RectLocations.bottom, offset=(0, 0), attached_to=self)]
-
-    def set_both_rects(self):
-        self.rect.center = (0, 0)
-        self.rect_rel = self.rect.copy()
-        self.rect_rel.center = self.attached_to.center_rel
-
-
-class PlayerShip(Ship):
+# TODO: Temp, this isnt being used yet
+class EnemyShip(Ship):
     def __init__(self, screen, type=0):
         super().__init__(screen)
         self.center_rel = self.screen_rect.center
-        self.base = BaseShip(self)
+        self.base = ShipCore(self)
         self.modules = [self.base]
