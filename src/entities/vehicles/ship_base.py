@@ -6,6 +6,7 @@ from entities.modules.ship_core import ShipCore
 
 class Ship(Entity):
     def __init__(self, screen, type=0):
+        super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
         self.modules = None  # TEMP, there should be base modules
@@ -13,6 +14,9 @@ class Ship(Entity):
 
     def add_module(self, mod):
         self.modules.append(mod)
+
+    def make_sprite_group(self):
+        self.sprite_group = pg.sprite.Group(module for module in self.modules)
 
     #def set_rect_rel_recursive(self, camera):
     #for module in modules:

@@ -6,9 +6,9 @@ from entities.modules.port import Port
 
 class IronModule(Module):
     def __init__(self, size, side=None, offset=None, attached_to=None):
-        super().__init__(size=size, color="GREEN", offset=offset, attached_to=attached_to, side=side)
+        super().__init__(size=size, color="GREY", offset=offset, attached_to=attached_to, side=side)
         self.ports = None
-        self.cost = 500
+        self.cost = self.size.value * self.size.value
 
     def init_ports(self):
         self.ports = [

@@ -16,7 +16,7 @@ class MapData:
         first_shop_icon = ShopIcon(self.data, (300, 300), ShopData(mods=first_shop_modules))
 
         first_level_enemies = [EnemyShip(self.data.screen)]
-        first_level_data = LevelData(first_level_enemies)
+        first_level_data = LevelData(self.data, first_level_enemies)
         first_level_icon = LevelIcon(self.data, (-100, 250), first_level_data)
         self.locations = [first_shop_icon, first_level_icon]
         self.player_map_icon = PlayerMapIcon()
