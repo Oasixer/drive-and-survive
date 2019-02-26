@@ -1,6 +1,10 @@
+from data.data import GlobalData
+
+
 class Scene:
     def __init__(self):
-        pass
+        self.data = GlobalData()
+        print(self.data.screen)
 
     def render(self):
         raise NotImplementedError

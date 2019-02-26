@@ -1,8 +1,6 @@
 import pygame as pg
 
-from data.player_data import PlayerData
 from enum import Enum
-from game_states.map.map_data import MapData
 
 
 class Keys(Enum):
@@ -32,24 +30,15 @@ class Keybinds(Enum):
     quit = Keys.esc.value
 
 
-class Data:
-    def __init__(self, manager):
-        pg.font.init()
-        self.font = pg.font.SysFont('Comic Sans MS', 30)
-        self.manager = manager
-        self.screen = pg.display.get_surface()
-        self.screen_rect = self.screen.get_rect()
-        self.HALF_WIDTH = self.screen_rect.height / 2
-        self.HALF_HEIGHT = self.screen_rect.height / 2
-        self.map_data = MapData(self)
-        self.player = PlayerData(self)
-        ''' Might not need this:
-        self.keybinds = {}
-        for bind in Keybinds:
-            self.keybinds[bind.name] = bind.value'''
+class GlobalData:
+    def __new__(cls):
 
-    # TODO: In the future, this function should probably take keybinds as parameters
-    # So that you can have diff players with diff keybinds and a single player having different keybinds for different states.
+        if not hasattr(cls, 'instance'):
+
+            cls.instance = super(GlobalData, cls).__new__(cls)
+
+        return cls.instance
+
     def get_inputs(self, keys):
         pressed = []
         for keybind in Keybinds:
@@ -59,3 +48,20 @@ class Data:
                     quit()
                 pressed.append(keybind.name)
         return pressed
+
+
+'''class GlobalData:
+    val = {}
+
+    def __init__(self, val):
+        self.val = val
+
+    def __getitem__(self, key):
+        return self.val[key]
+
+    def __setitem__(self, key, val):
+        self.val[key] = val
+
+    @classmethod
+    def get(cls):
+        return cls.__init__(cls.val)'''

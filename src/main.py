@@ -1,10 +1,11 @@
 import os
 import pygame as pg
 
+from data.data import GlobalData
 from game_states.scene_management.manager import SceneManager
 
-SCREEN_SIZE = (1400, 855)
 CAPTION = "FUCK"
+SCREEN_SIZE = (1400, 855)
 
 
 class Game:
@@ -16,8 +17,22 @@ class Game:
         self.fps = 60
         self.clock = pg.time.Clock()
         self.keys = pg.key.get_pressed()
+        data = GlobalData()
+        pg.font.init()
+        data.font = pg.font.SysFont('Comic Sans MS', 30)
+        data.scr = pg.display.get_surface()
+        data.screen = data.scr
+        data.rect = data.scr.get_rect()
+        data.screen_rect = data.rect
+        data.cy = data.rect.centery
+        data.cx = data.rect.centerx
+        data.c = data.rect.center
+        data.t = data.rect.top
+        data.b = data.rect.bottom
+        data.l = data.rect.left
+        data.r = data.rect.right
         self.manager = SceneManager()
-        self.data = self.manager.scene.data
+        data.manager = self.manager
 
     def main_loop(self):
         while (True):

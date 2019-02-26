@@ -1,5 +1,7 @@
 import pygame as pg
 
+from data.data import GlobalData
+
 
 class testThing(pg.sprite.Sprite):
     def __init__(self):
@@ -7,10 +9,8 @@ class testThing(pg.sprite.Sprite):
 
 
 class LevelData:
-    def __init__(self, data, enemies):
-        self.data = data
-        self.screen = self.data.screen
-        self.screen_rect = self.data.screen_rect
+    def __init__(self, enemies):
+        self.data = GlobalData()
         for enemy in enemies:
             enemy.make_sprite_group()
         self.enemy_group = pg.sprite.Group(enemy.sprite_group for enemy in enemies)

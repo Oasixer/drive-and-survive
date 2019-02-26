@@ -2,6 +2,7 @@ import pygame as pg
 
 import utils.mouse as mouse
 
+from data.data import GlobalData
 from entities.entity_base import Entity
 from entities.modules.module_base import ModSize
 from entities.modules.port import Port
@@ -10,6 +11,8 @@ from entities.modules.port import Port
 class Toolbar(Entity):
     def __init__(self, width, height):
         super().__init__()
+        self.data = GlobalData()
+        self.screen = self.data.screen
         self.set_contents()
         toolbar_width = width
         toolbar_height = height
@@ -22,7 +25,7 @@ class Toolbar(Entity):
             for mod in modlist:
                 mod.hovered = mouse.get_hovered(mod.rect_rel)
                 if mod.hovered:
-                    self.scene.ship.render(self.screen, render_single_type=Port, port_size=mod.size)
+                    self.scene.ship.render(render_single_type=Port, port_size=mod.size)
                     if self.scene.grabbed_mod is not None:
                         if pg.mouse.get_pressed()[0]:
                             self.scene.grabbed_mod = mod

@@ -1,5 +1,6 @@
 import pygame as pg
 
+from data.data import GlobalData
 from game_states.scene_management.scene import Scene
 from game_states.shops.toolbar import InventoryToolbar
 from game_states.shops.toolbar import ShopToolbar
@@ -7,9 +8,9 @@ from utils.camera import ShopCamera
 
 
 class ShopScene(Scene):
-    def __init__(self, data, shop_data):
+    def __init__(self, shop_data):
         super().__init__()
-        self.data = data
+        self.data = GlobalData()
         self.shop_data = shop_data
         self.inputs = []
         self.camera = ShopCamera()
@@ -31,23 +32,20 @@ class ShopScene(Scene):
         self.toolbars[1].set_contents()
         for toolbar in self.toolbars:
             toolbar.scene = self
-            toolbar.data = self.data
-            toolbar.screen = self.screen
-            toolbar.screen_rect = self.screen_rect
             toolbar.update_image()
 
     def render(self):
-        self.ship.render(screen=self.screen)
+        self.ship.render()
         for toolbar in self.toolbars:
-            self.data.screen.blit(toolbar.image, toolbar.rect)
+            self.screen.blit(toolbar.image, toolbar.rect)
         if self.grabbed_mod is not None:
             self.camera.blit_rel(self.grabbed_mod)
 
     def show_scene_info(self):
-        super().show_scene_info(extra_messages=[f'Your money$$$$$: {self.data.player.money}'])
+        super().show_scene_info(extra_messages=[f"Your money$$$$$: {self.data.player.money}"])
 
     def update(self):
-        self.data.screen.fill(pg.Color("GRAY"))
+        self.data.screen.fill(pg.Color("BLACK"))
         for toolbar in self.toolbars:
             toolbar.update_image()
             toolbar.check_grabs()

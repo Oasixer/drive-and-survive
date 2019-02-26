@@ -1,5 +1,6 @@
 import pygame as pg
 
+from data.data import GlobalData
 from entities.entity_base import Entity
 from enum import Enum
 
@@ -21,6 +22,7 @@ class RectLocations(Enum):
 class Module(Entity):
     def __init__(self, size=None, color=None, side=None, offset=None, attached_to=None, image=None):
         super().__init__()
+        self.data = GlobalData()
         self.grow_amount = 8  # This has to be an even number because of pixel math
         self.hovered = False
         self.size = size
@@ -72,8 +74,8 @@ class Module(Entity):
         self.rect_rel.centerx = self.attached_to.rect_rel.centerx + self.offset_center[0]
         self.rect_rel.centery = self.attached_to.rect_rel.centery + self.offset_center[1]
 
-    def blit_from_parent(self, screen):
-        screen.blit(self.image, self.rect_rel)
+    def blit_from_parent(self):
+        self.data.screen.blit(self.image, self.rect_rel)
 
     def add_attached(self, mod, parent_ship):
         parent_ship.add_module(mod)

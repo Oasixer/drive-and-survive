@@ -1,9 +1,13 @@
 import pygame as pg
 
+from data.data import GlobalData
+
 
 class Camera:
     def __init__(self):
-        self.screen = pg.display.get_surface()
+        self.data = GlobalData()
+        self.screen = self.data.scr
+        self.screen_rect = self.data.rect
 
     def apply(self, target):
         '''try:
@@ -20,7 +24,6 @@ class Camera:
 class MapCamera(Camera):
     def __init__(self):
         super().__init__()
-        self.screen_rect = self.screen.get_rect()
 
     def set_rect_rel(self, target):
         rect = target.rect

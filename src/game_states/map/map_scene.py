@@ -1,21 +1,22 @@
 import pygame as pg
 
+from data.data import GlobalData
 from game_states.scene_management.scene import Scene
 from utils.camera import MapCamera
 
 
 class MapScene(Scene):
-    def __init__(self, data):
+    def __init__(self):
         super().__init__()
-        self.data = data
+        self.data = GlobalData()
+        self.screen = self.data.screen
         self.data.map_scene = self
         self.map_data = self.data.map_data
         self.camera = MapCamera()
         self.player_map_icon = self.map_data.player_map_icon
-        self.locations = self.data.map_data.locations
+        self.locations = self.map_data.locations
         self.inputs = []
         self.player_map_icon.inputs = self.inputs
-        self.player_map_icon.manager = self.data.manager
         self.camera.set_rect_rel(self.player_map_icon)
         for loc in self.locations:
             self.camera.set_rect_rel(loc)

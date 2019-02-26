@@ -1,6 +1,7 @@
 import pygame as pg
 import utils.mouse as mouse
 
+from data.data import GlobalData
 from entities.entity_base import Entity
 from entities.modules.module_base import ModSize
 from entities.modules.module_base import module_test
@@ -9,10 +10,9 @@ from game_states.shops.shop_scene import ShopScene
 
 
 class MapIcon(Entity):
-    def __init__(self, data):
+    def __init__(self):
         super().__init__()
-        self.data = data
-        self.manager = self.data.manager
+        self.data = GlobalData()
 
     def update(self):
         if mouse.get_hovered(self.rect_rel):
@@ -42,8 +42,8 @@ class PlayerMapIcon(Entity):
 
 
 class ShopIcon(MapIcon):
-    def __init__(self, data, location, shop_data):
-        super().__init__(data)
+    def __init__(self, location, shop_data):
+        super().__init__()
         self.shop_data = shop_data
         self.grow_amount = 8
         self.icon_size = ModSize.medium
@@ -58,12 +58,12 @@ class ShopIcon(MapIcon):
         super().update()
 
     def enter(self):
-        self.manager.go_to(ShopScene(self.data, self.shop_data))
+        self.data.manager.go_to(ShopScene(self.shop_data))
 
 
 class LevelIcon(MapIcon):
-    def __init__(self, data, location, level_data):
-        super().__init__(data)
+    def __init__(self, location, level_data):
+        super().__init__()
         self.level_data = level_data
         self.grow_amount = 8
         self.icon_size = ModSize.medium
@@ -78,4 +78,4 @@ class LevelIcon(MapIcon):
         super().update()
 
     def enter(self):
-        self.manager.go_to(LevelScene(self.data, self.level_data))
+        self.data.manager.go_to(LevelScene(self.level_data))

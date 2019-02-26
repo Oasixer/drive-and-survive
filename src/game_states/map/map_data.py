@@ -9,14 +9,12 @@ from game_states.shops.shop_data import ShopData
 
 
 class MapData:
-    def __init__(self, data):
-        self.data = data
-        self.locations = []
+    def __init__(self):
         first_shop_modules = [IronModule(ModSize.small), IronModule(ModSize.large)]
-        first_shop_icon = ShopIcon(self.data, (300, 300), ShopData(mods=first_shop_modules))
+        first_shop_icon = ShopIcon((300, 300), ShopData(mods=first_shop_modules))
 
-        first_level_enemies = [EnemyShip(self.data.screen)]
-        first_level_data = LevelData(self.data, first_level_enemies)
-        first_level_icon = LevelIcon(self.data, (-100, 250), first_level_data)
+        first_level_enemies = [EnemyShip()]
+        first_level_data = LevelData(first_level_enemies)
+        first_level_icon = LevelIcon((-100, 250), first_level_data)
         self.locations = [first_shop_icon, first_level_icon]
         self.player_map_icon = PlayerMapIcon()
