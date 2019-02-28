@@ -24,17 +24,13 @@ class Camera:
 class MapCamera(Camera):
     def __init__(self):
         super().__init__()
+        self.scene = self.data.scene
+        self.sprite_group = pg.sprite.Group([self.scene.player_map_icon, loc for loc in self.scene.locations])
+        for loc in self.scene.locations:
+            loc.rect.center = (self.screen_rect.centerx + loc.pos_from_center[0],
+                               self.screen_rect.centery + loc.pos_from_center[1])
 
-    def set_rect_rel(self, target):
-        rect = target.rect
-        rect.centerx = self.screen_rect.centerx + target.rect.centerx
-        rect.centery = self.screen_rect.centery - target.rect.centery
-        target.rect_rel = rect
-
-    def update_rect_rel(self, target, offset):
-        pass
-
-    def blit_rel(self, target):
+    def render_scene(self):
         self.screen.blit(target.image, target.rect_rel)
 
 

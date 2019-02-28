@@ -10,9 +10,10 @@ from game_states.shops.shop_scene import ShopScene
 
 
 class MapIcon(Entity):
-    def __init__(self):
+    def __init__(self, pos_from_center):
         super().__init__()
         self.data = GlobalData()
+        self.pos_from_center = pos_from_center
 
     def update(self):
         if mouse.get_hovered(self.rect_rel):
@@ -23,13 +24,18 @@ class MapIcon(Entity):
     def handle_events(self, events):
         raise NotImplementedError
 
+    def add_hover(self):
+        self.image_on_hover = pg.transform.scale(
+            self.image.copy(), (self.rect.width + self.grow_amount, self.rect.height + self.grow_amount))
+        self.rect_on_hover = self.image_on_hover.get_rect()
+        self.rect_on_hover.center = self.rect.center
+
 
 class PlayerMapIcon(Entity):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, pos_from_center):
+        super().__init__(pos_from_center)
         self.image = pg.image.load("../resources/player_icon_test.png").convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.center = (0, 0)
 
     def update(self):
         for action in self.inputs:
@@ -42,17 +48,13 @@ class PlayerMapIcon(Entity):
 
 
 class ShopIcon(MapIcon):
-    def __init__(self, location, shop_data):
-        super().__init__()
+    def __init__(self, pos_from_center, shop_data):
+        super().__init__(pos_from_center)
         self.shop_data = shop_data
         self.grow_amount = 8
         self.icon_size = ModSize.medium
         self.image, self.rect = module_test(self.icon_size, "ORANGE")
-        self.image_on_hover = pg.transform.scale(
-            self.image.copy(), (self.rect.width + self.grow_amount, self.rect.height + self.grow_amount))
-        self.rect_on_hover = self.image_on_hover.get_rect()
-        self.rect.center = location
-        self.rect_on_hover.center = location
+        self.add_hover()
 
     def update(self):
         super().update()
@@ -62,17 +64,13 @@ class ShopIcon(MapIcon):
 
 
 class LevelIcon(MapIcon):
-    def __init__(self, location, level_data):
-        super().__init__()
+    def __init__(self, pos_from_center, level_data):
+        super().__init__(pos_from_center)
         self.level_data = level_data
         self.grow_amount = 8
         self.icon_size = ModSize.medium
         self.image, self.rect = module_test(self.icon_size, "BLUE")
-        self.image_on_hover = pg.transform.scale(
-            self.image.copy(), (self.rect.width + self.grow_amount, self.rect.height + self.grow_amount))
-        self.rect_on_hover = self.image_on_hover.get_rect()
-        self.rect.center = location
-        self.rect_on_hover.center = location
+        self.add_hover()
 
     def update(self):
         super().update()
