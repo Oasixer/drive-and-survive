@@ -31,8 +31,8 @@ class Game:
         data.b = data.rect.bottom
         data.l = data.rect.left
         data.r = data.rect.right
-        self.manager = SceneManager()
-        data.manager = self.manager
+        data.manager = SceneManager()
+        self.manager = data.manager
 
     def main_loop(self):
         while (True):

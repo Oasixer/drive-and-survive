@@ -14,13 +14,16 @@ class MapScene(Scene):
         self.map_data = self.data.map_data
         self.player_map_icon = self.map_data.player_map_icon
         self.locations = self.map_data.locations
-        self.camera = MapCamera()
         self.inputs = []
         self.player_map_icon.inputs = self.inputs
+        self.entities = [self.player_map_icon] + self.locations
+        self.camera = MapCamera(self)
         self.screen.fill(pg.Color("#0094FF"))
 
     def update(self):
-        self.data.screen.fill(pg.Color("#0094FF"))  #TODO: shouldnt need to fill screen until render time
+        self.data.screen.fill(
+            pg.Color("#0094FF")
+        )  #TODO: shouldnt need to fill screen until render time
         for loc in self.locations:
             loc.update()
 

@@ -22,16 +22,22 @@ class Camera:
 
 
 class MapCamera(Camera):
-    def __init__(self):
+    def __init__(self, scene):
         super().__init__()
-        self.scene = self.data.scene
-        self.sprite_group = pg.sprite.Group([self.scene.player_map_icon, loc for loc in self.scene.locations])
+        self.scene = scene
+        for entity in self.scene.entities:
+            #print(type(entity))
+            entity.rect.center = (
+                self.screen_rect.centerx + entity.pos_from_center[0],
+                self.screen_rect.centery - entity.pos_from_center[1]
+            )
+            #print(entity.rect)
         for loc in self.scene.locations:
-            loc.rect.center = (self.screen_rect.centerx + loc.pos_from_center[0],
-                               self.screen_rect.centery + loc.pos_from_center[1])
+            loc.add_hover()
 
     def render_scene(self):
-        self.screen.blit(target.image, target.rect_rel)
+        for entity in self.scene.entities:
+            self.screen.blit(entity.image, entity.rect)
 
 
 class ShopCamera(Camera):
