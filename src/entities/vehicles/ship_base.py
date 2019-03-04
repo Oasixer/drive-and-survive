@@ -34,6 +34,18 @@ class Ship(Entity):
                         if port.size == port_size:
                             port.blit_from_parent()
 
+    def create_image(self, port_size=None, render_single_type=None):
+        for module in self.modules:
+            spaced_mod = mod.rect_on_hover if mod.hovered = mod.rect
+            #if hovering, perform spacing on module and blit to screen
+            self.screen.blit(module.image, module.rect_rel)
+
+    def update_image(self, port_size=None, render_single_type=None):
+        #call above function to create image of module, then add to port
+            for port in module.ports:
+                if port.size == port_size:
+                    port.blit_from_parent()
+
 
 # TODO: Temp, this isnt being used yet
 class EnemyShip(Ship):
