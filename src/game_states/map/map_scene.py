@@ -2,7 +2,8 @@ import pygame as pg
 
 from data.data import GlobalData
 from game_states.scene_management.scene import Scene
-from utils.camera import MapCamera
+
+#from utils.camera import MapCamera
 
 
 class MapScene(Scene):
@@ -17,18 +18,19 @@ class MapScene(Scene):
         self.inputs = []
         self.player_map_icon.inputs = self.inputs
         self.entities = [self.player_map_icon] + self.locations
-        self.camera = MapCamera(self)
+        for entity in self.entities:
+            entity.rect.center = (self.data.cx + entity.pos_from_center[0],
+                                  self.data.cy - entity.pos_from_center[1])
         self.screen.fill(pg.Color("#0094FF"))
 
     def update(self):
-        self.data.screen.fill(
-            pg.Color("#0094FF")
-        )  #TODO: shouldnt need to fill screen until render time
         for loc in self.locations:
             loc.update()
 
     def render(self):
-        self.camera.render_scene()
+        self.data.screen.fill(pg.Color("#0094FF"))  #TODO: shouldnt need to fill screen until render time
+        for entity in self.entities:
+            self.screen.blit(entity.image, entity.rect)
 
     def handle_events(self, events):
         self.inputs = self.data.get_inputs(pg.key.get_pressed())

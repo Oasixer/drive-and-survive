@@ -1,7 +1,6 @@
 import pygame as pg
 
 from data.data import GlobalData
-from data.player_data import PlayerData
 from game_states.map.map_data import MapData
 from game_states.map.map_scene import MapScene
 from game_states.scene_management.scene import Scene
@@ -30,6 +29,5 @@ class TitleScene(Scene):
         for e in events:
             if e.type == pg.KEYDOWN and e.key == pg.K_SPACE:
                 self.data.map_data = MapData()
-                self.data.player = PlayerData()
                 map_scene = MapScene()
                 self.data.manager.go_to(map_scene)

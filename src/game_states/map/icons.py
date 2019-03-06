@@ -4,9 +4,7 @@ import utils.mouse as mouse
 from data.data import GlobalData
 from entities.entity_base import Entity
 from entities.modules.module_base import ModSize
-from entities.modules.module_base import module_test
 from game_states.levels.level_scene import LevelScene
-from game_states.shops.shop_scene import ShopScene
 
 
 class MapIcon(Entity):
@@ -17,7 +15,9 @@ class MapIcon(Entity):
 
     def update(self):
         if mouse.get_hovered(self.rect):
-            self.data.screen.blit(self.image_on_hover, self.rect_on_hover)
+            self.image = self.image_on_hover
+        else:
+            self.image = self.image_normal
         if mouse.get_clicked(self.rect):
             self.enter()
 
@@ -26,21 +26,15 @@ class MapIcon(Entity):
 
     def add_hover(self):
         self.image_on_hover = pg.transform.scale(
-            self.image.copy(), (
-                self.rect.width + self.grow_amount,
-                self.rect.height + self.grow_amount
-            )
-        )
-        self.rect_on_hover = self.image_on_hover.get_rect()
-        self.rect_on_hover.center = self.rect.center
+            self.image_normal.copy(),
+            (self.rect.width + self.grow_amount, self.rect.height + self.grow_amount))
 
 
 class PlayerMapIcon(Entity):
     def __init__(self, pos_from_center):
         super().__init__()
         self.pos_from_center = pos_from_center
-        self.image = pg.image.load("../resources/player_icon_test.png"
-                                   ).convert_alpha()
+        self.image = pg.image.load("../resources/player_icon_test.png").convert_alpha()
         self.rect = self.image.get_rect()
 
     def update(self):
@@ -53,29 +47,13 @@ class PlayerMapIcon(Entity):
                 pass
 
 
-class ShopIcon(MapIcon):
-    def __init__(self, pos_from_center, shop_data):
-        super().__init__(pos_from_center)
-        self.shop_data = shop_data
-        self.grow_amount = 8
-        self.icon_size = ModSize.medium
-        self.image, self.rect = module_test(self.icon_size, "ORANGE")
-        self.add_hover()
-
-    def update(self):
-        super().update()
-
-    def enter(self):
-        self.data.manager.go_to(ShopScene(self.shop_data))
-
-
 class LevelIcon(MapIcon):
     def __init__(self, pos_from_center, level_data):
         super().__init__(pos_from_center)
         self.level_data = level_data
         self.grow_amount = 8
         self.icon_size = ModSize.medium
-        self.image, self.rect = module_test(self.icon_size, "BLUE")
+        self.image_normal, self.rect = temporary_icon_generator(self.icon_size, "BLUE")
         self.add_hover()
 
     def update(self):
@@ -83,3 +61,9 @@ class LevelIcon(MapIcon):
 
     def enter(self):
         self.data.manager.go_to(LevelScene(self.level_data))
+
+
+def temporary_icon_generator(size, color):
+    image = pg.Surface((size.value, size.value))
+    image.fill(pg.Color(color))
+    return image, image.get_rect()

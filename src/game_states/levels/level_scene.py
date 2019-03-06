@@ -2,29 +2,26 @@ import pygame as pg
 
 from data.data import GlobalData
 from game_states.scene_management.scene import Scene
-from utils.camera import LevelCamera
+from utils.load_dump_data import load_ship_file
 
 
 class LevelScene(Scene):
     def __init__(self, level_data):
         self.data = GlobalData()
         self.screen = self.data.screen
-        self.level_data = level_data
-        self.ship = self.data.player.ship
-        self.ship.make_sprite_group()
-        start_pos = (self.data.rect.centery, )
-        #self.ship.move_abs(start_pos)
+        self.ship = load_ship_file()
+        self.ship.generate_image_recursive()
+        self.ship.generate_rect_recursive()
+        self.ship.place_in_scene((self.data.cx, self.data.cy - 300))
         self.inputs = []
-        self.camera = LevelCamera()
-        self.screen_rect = self.data.screen_rect
 
     def update(self):
-        self.screen.fill(pg.Color("BLACK"))
+        #loop thru inputs and move shit
         pass
 
     def render(self):
-        #self.object_group.draw(self.screen)
-        pass
+        self.screen.fill(pg.Color("BLACK"))
+        self.ship.render()
 
     def handle_events(self, events):
-        pass
+        self.inputs = self.data.get_inputs(pg.key.get_pressed())

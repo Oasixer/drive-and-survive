@@ -10,12 +10,12 @@ class Scene:
         raise NotImplementedError
 
     def show_scene_info(self, offset_increment=30, extra_messages=[]):
-        font = self.data.font
+        font = self.data.sfont
         screen = self.data.screen
         all_messages = [f"Scene: {type(self)}"] + [message for message in extra_messages]
         offset = 0
         for message in all_messages:
-            textsurface = font.render(message, False, (0, 0, 0))
+            textsurface = font.render(message, True, (0, 0, 0))
             screen.blit(textsurface, (0, offset))
             offset += offset_increment
 

@@ -2,43 +2,49 @@ import pygame as pg
 
 from data.data import GlobalData
 from entities.entity_base import Entity
-from entities.modules.ship_core import ShipCore
 
 
 class Ship(Entity):
-    def __init__(self, type=0):
+    def __init__(self, modules=[]):
         super().__init__()
-        self.data = GlobalData()
-        self.screen = self.data.scr
-        self.rect = self.data.rect
-        self.modules = None  # TEMP, there should be base modules
+
+        self.image_path = "../resources/ship_basic_test.png"
+        self.modules = modules  # TEMP, there should be base modules
+        #for mod in self.modules:
+        #    mod.lock_to(self)
         self.speed = 1
 
-    def add_module(self, mod):
-        self.modules.append(mod)
+    def generate_image_recursive(self):
+        self.data = GlobalData()
+        self.screen = self.data.scr
+        # Generates or loads an image for itself and all its modules
+        self.image = pg.image.load(self.image_path).convert()
+        for mod in self.modules:
+            mod.generate_color_image()
 
-    def make_sprite_group(self):
-        self.sprite_group = pg.sprite.Group(module for module in self.modules)
+    def generate_rect_recursive(self):
+        self.rect = self.image.get_rect()
+        # Note: None of these rects know where they are positioned until you use place_in_scene
+        for mod in self.modules:
+            mod.generate_rect()
 
-    #def set_rect_rel_recursive(self, camera):
-    #for module in modules:
-    #camera.set_rect_rel(module):
+    def place_in_scene(self, pos):
+        # Make sure that you set the offsets of the modules before using this
+        # Also the pos paramater is absolute, not relative to the center
+        # So calculate the screen's center first if you want to place the ship based on that.
+        self.rect.center = pos
+        for mod in self.modules:
+            mod.offset_from_ship(pos)
+        #Need more code for when you load a ship with modules on it already
 
-    def render(self, port_size=None, render_single_type=None):
-        for module in self.modules:
-            if (render_single_type is None) or (type(module) == render_single_type):
-                self.screen.blit(module.image, module.rect_rel)
-            if port_size is not None:
-                if module.ports is not None:
-                    for port in module.ports:
-                        if port.size == port_size:
-                            port.blit_from_parent()
+    def update_position_recursive(self, delta):
+        self.rect.centerx += delta[0]
+        self.rect.centery += delta[1]
+        for mod in self.modules:
+            mod.rect.centerx += delta[0]
+            mod.rect.centery += delta[1]
 
-
-# TODO: Temp, this isnt being used yet
-class EnemyShip(Ship):
-    def __init__(self, type=0):
-        super().__init__()
-        self.center_rel = self.data.screen_rect.center
-        self.base = ShipCore(self)
-        self.modules = [self.base]
+    def render(self):
+        self.screen.blit(self.image, self.rect)
+        for mod in self.modules:
+            self.screen.blit(mod.image, mod.rect)
