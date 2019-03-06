@@ -48,20 +48,3 @@ class GlobalData:
                     quit()
                 pressed.append(keybind.name)
         return pressed
-
-
-'''class GlobalData:
-    val = {}
-
-    def __init__(self, val):
-        self.val = val
-
-    def __getitem__(self, key):
-        return self.val[key]
-
-    def __setitem__(self, key, val):
-        self.val[key] = val
-
-    @classmethod
-    def get(cls):
-        return cls.__init__(cls.val)'''

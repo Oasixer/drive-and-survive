@@ -16,8 +16,18 @@ class LevelScene(Scene):
         self.inputs = []
 
     def update(self):
-        #loop thru inputs and move shit
-        pass
+        move_directions = [0, 0]
+        for input_string in self.inputs:
+            if input_string == "up":
+                move_directions[1] -= 1
+            elif input_string == "down":
+                move_directions[1] += 1
+            elif input_string == "left":
+                move_directions[0] -= 1
+            elif input_string == "right":
+                move_directions[0] += 1
+        if move_directions[0] != 0 or move_directions[1] != 0:
+            self.ship.update_position_recursive(move_directions)
 
     def render(self):
         self.screen.fill(pg.Color("BLACK"))
@@ -25,3 +35,4 @@ class LevelScene(Scene):
 
     def handle_events(self, events):
         self.inputs = self.data.get_inputs(pg.key.get_pressed())
+        # Doesn't use the inputs until update runs

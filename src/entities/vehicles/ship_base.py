@@ -12,7 +12,7 @@ class Ship(Entity):
         self.modules = modules  # TEMP, there should be base modules
         #for mod in self.modules:
         #    mod.lock_to(self)
-        self.speed = 1
+        self.speed = 10
 
     def generate_image_recursive(self):
         self.data = GlobalData()
@@ -38,11 +38,11 @@ class Ship(Entity):
         #Need more code for when you load a ship with modules on it already
 
     def update_position_recursive(self, delta):
-        self.rect.centerx += delta[0]
-        self.rect.centery += delta[1]
+        self.rect.centerx += delta[0] * self.speed
+        self.rect.centery += delta[1] * self.speed
         for mod in self.modules:
-            mod.rect.centerx += delta[0]
-            mod.rect.centery += delta[1]
+            mod.rect.centerx += delta[0] * self.speed
+            mod.rect.centery += delta[1] * self.speed
 
     def render(self):
         self.screen.blit(self.image, self.rect)

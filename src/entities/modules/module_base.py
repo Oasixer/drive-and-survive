@@ -16,8 +16,6 @@ class Module(Entity):
         super().__init__()
         self.data = GlobalData()
         self.color = color
-        #self.grow_amount = 8  # This has to be an even number because of pixel math
-        self.hovered = False
         self.size = size
         self.offset = offset  # Default offset from the center of the ship
 
@@ -38,7 +36,6 @@ class Module(Entity):
     def offset_from_ship(self, ship_center):
         self.rect.centerx = ship_center[0] + self.offset[0]
         self.rect.centery = ship_center[1] + self.offset[1]
-        print(f"cy {self.rect.centery}")
 
     '''def lock_to(self, locked_to):
         self.locked_to = locked_to
