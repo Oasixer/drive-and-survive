@@ -48,3 +48,21 @@ class Ship(Entity):
         self.screen.blit(self.image, self.rect)
         for mod in self.modules:
             self.screen.blit(mod.image, mod.rect)
+
+    # Ash's image functions below. Will update once we resolve the SPAGHET :)
+    def create_image(self, port_size=None, render_single_type=None):
+        for module in self.modules:
+            pass
+
+            # I will go over this with you soon -K
+
+            #spaced_mod = mod.rect_on_hover if mod.hovered == mod.rect
+            #if hovering, perform spacing on module and blit to screen
+            #self.screen.blit(module.image, module.rect_rel)
+
+    def update_image(self, port_size=None, render_single_type=None):
+        pass
+        #call above function to create image of module, then add to port
+        #for port in module.ports:
+        #    if port.size == port_size:
+        #        port.blit_from_parent()
