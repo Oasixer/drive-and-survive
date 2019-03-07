@@ -13,12 +13,11 @@ generate_test_ship_file.generate(0)
 # So that if you change the example ship, it re-generates.
 
 CAPTION = "FUCK"
-SCREEN_SIZE = (1400, 855)
+SCREEN_SIZE = (1920, 1080)
 
 
 class Game:
     def __init__(self):
-
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pg.init()
         pg.display.set_caption(CAPTION)

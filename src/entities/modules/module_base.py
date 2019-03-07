@@ -37,12 +37,13 @@ class Module(Entity):
         self.rect.centerx = ship_center[0] + self.offset[0]
         self.rect.centery = ship_center[1] + self.offset[1]
 
-    '''def lock_to(self, locked_to):
-        self.locked_to = locked_to
-        self.offset = (self.rect.centerx - locked_to.rect.centerx, self.rect.centery - locked_to.rect.centery)'''
-    '''def update_position(self):
-        self.rect.centerx = self.locked_to.centerx + self.offset[0]
-        self.rect.centery = self.locked_to.centery + self.offset[1]'''
+    def update(self):
+        pass
+        # Not every module actually has to do any updating! This exists to be extended.
+
+    def update_position(self, delta):
+        self.rect.centerx += delta[0]
+        self.rect.centery += delta[1]
 
 
 def module_test(size, color):

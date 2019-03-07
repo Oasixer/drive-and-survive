@@ -8,7 +8,7 @@ class Ship(Entity):
     def __init__(self, modules=[]):
         super().__init__()
 
-        self.image_path = "../resources/ship_basic_test.png"
+        self.image_path = "../resources/airship_big.png"
         self.modules = modules  # TEMP, there should be base modules
         #for mod in self.modules:
         #    mod.lock_to(self)
@@ -18,9 +18,9 @@ class Ship(Entity):
         self.data = GlobalData()
         self.screen = self.data.scr
         # Generates or loads an image for itself and all its modules
-        self.image = pg.image.load(self.image_path).convert()
+        self.image = pg.image.load(self.image_path).convert_alpha()
         for mod in self.modules:
-            mod.generate_color_image()
+            mod.generate_image()
 
     def generate_rect_recursive(self):
         self.rect = self.image.get_rect()
@@ -35,14 +35,14 @@ class Ship(Entity):
         self.rect.center = pos
         for mod in self.modules:
             mod.offset_from_ship(pos)
+            mod.ship = self
         #Need more code for when you load a ship with modules on it already
 
-    def update_position_recursive(self, delta):
-        self.rect.centerx += delta[0] * self.speed
-        self.rect.centery += delta[1] * self.speed
+    def update_position_recursive(self, direct):
+        self.rect.centerx += direct[0] * self.speed
+        self.rect.centery += direct[1] * self.speed
         for mod in self.modules:
-            mod.rect.centerx += delta[0] * self.speed
-            mod.rect.centery += delta[1] * self.speed
+            mod.update_position((direct[0] * self.speed, direct[1] * self.speed))
 
     def render(self):
         self.screen.blit(self.image, self.rect)

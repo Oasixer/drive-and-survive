@@ -48,9 +48,9 @@ class PlayerMapIcon(Entity):
 
 
 class LevelIcon(MapIcon):
-    def __init__(self, pos_from_center, level_data):
+    def __init__(self, pos_from_center, level_scene_class):
         super().__init__(pos_from_center)
-        self.level_data = level_data
+        self.level_scene_class = level_scene_class
         self.grow_amount = 8
         self.icon_size = ModSize.medium
         self.image_normal, self.rect = temporary_icon_generator(self.icon_size, "BLUE")
@@ -60,7 +60,7 @@ class LevelIcon(MapIcon):
         super().update()
 
     def enter(self):
-        self.data.manager.go_to(LevelScene(self.level_data))
+        self.data.manager.go_to(self.level_scene_class())
 
 
 def temporary_icon_generator(size, color):
