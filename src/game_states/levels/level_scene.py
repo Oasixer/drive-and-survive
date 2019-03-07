@@ -15,6 +15,7 @@ class LevelScene(Scene):
         self.ship.place_in_scene((self.data.cx, self.data.cy - 300))
         self.ship.add_player()
         self.inputs = []
+        #self.scene_elements = []  # Use this for generic elements like background and ground maybe
 
     def update(self):
         move_directions = [0, 0]
